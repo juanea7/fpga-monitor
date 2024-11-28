@@ -1,0 +1,33 @@
+/*
+ * Monitor device tree overlay for the KRIA-MDC board
+ *
+ * Author : Juan Encinas <juan.encinas@upm.es>
+ * Date   : October 2024
+ *
+ * "Plug & Play" attachment of the Monitor memory maps into the static
+ * device tree of the system.
+ *
+ */
+
+
+/dts-v1/;
+/plugin/;
+
+/ {
+    fragment@0 {
+        target = <&amba>;
+        __overlay__ {
+	    monitor_0: monitor@fpga {
+                compatible = "cei.upm,monitor-1.00.a";
+                // reg = <0x0 0xa0100000 0x0 0x10000 0x0 0xb0100000 0x0 0x80000 0x0 0xb0180000 0x0 0x20000>;
+                reg = <0x0 0xa0100000 0x0 0x10000 0x0 0xb0100000 0x0 0x10000 0x0 0xb0180000 0x0 0x10000>;
+                reg-names = "ctrl", "power", "traces";
+                interrupt-parent = <&gic>;
+                interrupts = <0 89 1>;
+                interrupt-names = "irq";
+                dmas = <&fpd_dma_chan1 0>;
+                dma-names = "ps-dma-mon";
+            };
+        };
+    };
+};

@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "fcntl.h": "c",
+        "dma_simplemode.h": "c",
+        "stdint.h": "c",
+        "string.h": "c",
+        "powermon.h": "c",
+        "cpu_usage.h": "c",
+        "pthread.h": "c",
+        "unified_monitor.h": "c"
+    }
+}
