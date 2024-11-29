@@ -1,5 +1,5 @@
 /*
- * ARTICo3 runtime API
+ * Monitor runtime API
  *
  * Author      : Juan Encinas Anchústegui <juan.encinas@upm.es>
  * Date        : February 2021
@@ -187,6 +187,10 @@ void monitor_clean(){
  */
 void monitor_stop(){
 
+    // Return if monitor is already done, otherwise stop it
+    if (monitor_hw_isdone() == 1){
+        return;
+    }
     monitor_hw_stop();
 
 }
