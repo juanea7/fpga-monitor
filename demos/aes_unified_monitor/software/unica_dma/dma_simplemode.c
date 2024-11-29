@@ -56,7 +56,7 @@ void dma_s2mm_status(unsigned int *virtual_addr)
 	}
 	else
 	{
-		printf(" Running.\n");
+		// printf(" Running.\n");
 	}
 
 	if (status & STATUS_IDLE)
@@ -128,7 +128,7 @@ void dma_mm2s_status(unsigned int *virtual_addr)
 	// MM2S_STATUS_REGISTER --> offset of MM2S status register
 	unsigned int status = read_dma(virtual_addr, MM2S_STATUS_REGISTER);
 
-	printf("Memory-mapped to stream status (0x%08x@0x%02x):", status, MM2S_STATUS_REGISTER);
+	// printf("Memory-mapped to stream status (0x%08x@0x%02x):", status, MM2S_STATUS_REGISTER);
 
 	if (status & STATUS_HALTED)
 	{
@@ -136,7 +136,7 @@ void dma_mm2s_status(unsigned int *virtual_addr)
 	}
 	else
 	{
-		printf(" Running.\n");
+		// printf(" Running.\n");
 	}
 
 	if (status & STATUS_IDLE)

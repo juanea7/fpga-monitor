@@ -18,7 +18,7 @@ TOOL:
 MEASUREMENT_BOARD:
   # Required parameters (only used if ADC_ENABLED is True)
   ADC_ENABLED: True           # True or False
-  ADC_MEASUREMENT_BOARD: "MDC" # "External" == CEI measurement board; "MDC" == UNICA Kria's I²C ADC # TODO: Add support for other boards (AU250, etc.)
+  ADC_MEASUREMENT_BOARD: "MDC" # "CEI" == CEI measurement board; "MDC" == UNICA Kria's I²C ADC # TODO: Add support for other boards (AU250, etc.)
   ADC_REFERENCE_VOLTAGE: 5.0  # Float: 2.5 or 5.0 (vref of the adc)
   ADC_GAIN: 50.4              # Float
   ADC_RESOLUTION: 12          # Integer (ADC resolution bits)

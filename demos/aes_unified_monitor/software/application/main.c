@@ -59,71 +59,74 @@ int main()
 
 	/* Init data buffers */
 
-	/* text data FFEEDDCCBBAA99887766554433221100 */
-	unsigned int j = 0x00000000;
-	for (int i = 0; i < 16; ++i)
-	{
-		virtual_src_TEXT_addr[i] = j;
-		j = j + 0x11;
-	}
-
-	j = 0x00000000;
-	/* key data F0E0D0C0B0A09080706050403020100 */
-	for (int i = 0; i < 32; ++i)
-	{
-		virtual_src_KEY_addr[i] = j;
-		j = j + 0x1;
-	}
-
-	printf(" Data buffers initialized\n");
-
-	memset(virtual_dst_ENCRYPTED_addr, 0, 16 * 4);
-
-	/* Configure the accelerator */
-	write_dma(aes_ip_virtual_addr, SLV_REG0, (OUT_SIZE << OUT_SIZE_SHIFT));
-
-	/*  Reset the DMAs */
-	write_dma(dma_TEXT_virtual_addr, MM2S_CONTROL_REGISTER, RESET_DMA);
-	write_dma(dma_KEY_virtual_addr, MM2S_CONTROL_REGISTER, RESET_DMA);
-	write_dma(dma_ENCRYPTED_virtual_addr, S2MM_CONTROL_REGISTER, RESET_DMA);
-
-	/* Halt DMAs */
-	write_dma(dma_TEXT_virtual_addr, MM2S_CONTROL_REGISTER, HALT_DMA);
-	write_dma(dma_KEY_virtual_addr, MM2S_CONTROL_REGISTER, HALT_DMA);
-	write_dma(dma_ENCRYPTED_virtual_addr, S2MM_CONTROL_REGISTER, HALT_DMA);
-
-	/* Enable interrupts */
-	write_dma(dma_TEXT_virtual_addr, MM2S_CONTROL_REGISTER, ENABLE_ALL_IRQ);
-	write_dma(dma_KEY_virtual_addr, MM2S_CONTROL_REGISTER, ENABLE_ALL_IRQ);
-	write_dma(dma_ENCRYPTED_virtual_addr, S2MM_CONTROL_REGISTER, ENABLE_ALL_IRQ);
-
-	/*  Write the SOURCE/DESTINATION ADDRESS registers */
-	write_dma(dma_TEXT_virtual_addr, MM2S_SRC_ADDRESS_REGISTER, TEXT_BUFFER);
-	write_dma(dma_KEY_virtual_addr, MM2S_SRC_ADDRESS_REGISTER, KEY_BUFFER);
-	write_dma(dma_ENCRYPTED_virtual_addr, S2MM_DST_ADDRESS_REGISTER, ENCRYPTED_BUFFER);
-
-	/*  Run DMAs */
-	write_dma(dma_KEY_virtual_addr, MM2S_CONTROL_REGISTER, RUN_DMA);
-	write_dma(dma_TEXT_virtual_addr, MM2S_CONTROL_REGISTER, RUN_DMA);
-	write_dma(dma_ENCRYPTED_virtual_addr, S2MM_CONTROL_REGISTER, RUN_DMA);
-
-	/*  Write the LENGTH of the transfer
-	 *  Transfer will start right after this register is written
-	 */
-
-	printf(" DMA transfer started\n");
-
 	// Start monitor
 	unified_monitor_start();
 
-	write_dma(dma_TEXT_virtual_addr, MM2S_TRNSFR_LENGTH_REGISTER, TEXT_SIZE_BYTE);
-	write_dma(dma_KEY_virtual_addr, MM2S_TRNSFR_LENGTH_REGISTER, KEY_SIZE_BYTE);
-	write_dma(dma_ENCRYPTED_virtual_addr, S2MM_BUFF_LENGTH_REGISTER, ENCRYPTED_SIZE_BYTE);
+	for (int aux_i = 0; aux_i < 50; aux_i++)
+	{
+		/* text data FFEEDDCCBBAA99887766554433221100 */
+		unsigned int j = 0x00000000;
+		for (int i = 0; i < 16; ++i)
+		{
+			virtual_src_TEXT_addr[i] = j;
+			j = j + 0x11;
+		}
 
-	/* Wait for transfers completion */
-	dma_mm2s_sync(dma_TEXT_virtual_addr);
-	dma_mm2s_sync(dma_KEY_virtual_addr);
-	dma_s2mm_sync(dma_ENCRYPTED_virtual_addr);
+		j = 0x00000000;
+		/* key data F0E0D0C0B0A09080706050403020100 */
+		for (int i = 0; i < 32; ++i)
+		{
+			virtual_src_KEY_addr[i] = j;
+			j = j + 0x1;
+		}
+
+		printf(" Data buffers initialized\n");
+
+		memset(virtual_dst_ENCRYPTED_addr, 0, 16 * 4);
+
+		/* Configure the accelerator */
+		write_dma(aes_ip_virtual_addr, SLV_REG0, (OUT_SIZE << OUT_SIZE_SHIFT));
+
+		/*  Reset the DMAs */
+		write_dma(dma_TEXT_virtual_addr, MM2S_CONTROL_REGISTER, RESET_DMA);
+		write_dma(dma_KEY_virtual_addr, MM2S_CONTROL_REGISTER, RESET_DMA);
+		write_dma(dma_ENCRYPTED_virtual_addr, S2MM_CONTROL_REGISTER, RESET_DMA);
+
+		/* Halt DMAs */
+		write_dma(dma_TEXT_virtual_addr, MM2S_CONTROL_REGISTER, HALT_DMA);
+		write_dma(dma_KEY_virtual_addr, MM2S_CONTROL_REGISTER, HALT_DMA);
+		write_dma(dma_ENCRYPTED_virtual_addr, S2MM_CONTROL_REGISTER, HALT_DMA);
+
+		/* Enable interrupts */
+		write_dma(dma_TEXT_virtual_addr, MM2S_CONTROL_REGISTER, ENABLE_ALL_IRQ);
+		write_dma(dma_KEY_virtual_addr, MM2S_CONTROL_REGISTER, ENABLE_ALL_IRQ);
+		write_dma(dma_ENCRYPTED_virtual_addr, S2MM_CONTROL_REGISTER, ENABLE_ALL_IRQ);
+
+		/*  Write the SOURCE/DESTINATION ADDRESS registers */
+		write_dma(dma_TEXT_virtual_addr, MM2S_SRC_ADDRESS_REGISTER, TEXT_BUFFER);
+		write_dma(dma_KEY_virtual_addr, MM2S_SRC_ADDRESS_REGISTER, KEY_BUFFER);
+		write_dma(dma_ENCRYPTED_virtual_addr, S2MM_DST_ADDRESS_REGISTER, ENCRYPTED_BUFFER);
+
+		/*  Run DMAs */
+		write_dma(dma_KEY_virtual_addr, MM2S_CONTROL_REGISTER, RUN_DMA);
+		write_dma(dma_TEXT_virtual_addr, MM2S_CONTROL_REGISTER, RUN_DMA);
+		write_dma(dma_ENCRYPTED_virtual_addr, S2MM_CONTROL_REGISTER, RUN_DMA);
+
+		/*  Write the LENGTH of the transfer
+		*  Transfer will start right after this register is written
+		*/
+
+		printf(" DMA transfer started\n");
+
+		write_dma(dma_TEXT_virtual_addr, MM2S_TRNSFR_LENGTH_REGISTER, TEXT_SIZE_BYTE);
+		write_dma(dma_KEY_virtual_addr, MM2S_TRNSFR_LENGTH_REGISTER, KEY_SIZE_BYTE);
+		write_dma(dma_ENCRYPTED_virtual_addr, S2MM_BUFF_LENGTH_REGISTER, ENCRYPTED_SIZE_BYTE);
+
+		/* Wait for transfers completion */
+		dma_mm2s_sync(dma_TEXT_virtual_addr);
+		dma_mm2s_sync(dma_KEY_virtual_addr);
+		dma_s2mm_sync(dma_ENCRYPTED_virtual_addr);
+	}
 
 	// Stop monitor
 	unified_monitor_stop();
